@@ -1,3 +1,4 @@
+			;edited by Jacob Watters on 4-28-19
 			;		ARM Programming Assignment #4: Count the ones in a binary number
 			;
 			;		Write a program that counts the number of ones in a binary number,
@@ -16,8 +17,6 @@
 			;		2. (30 extra points) For extending the program to counting the ones
 			;		in any word-aligned continuous region of memory.
 			
-			;		Your code here
-			
 example		DCD		0x0010070f
 numones		FILL		4
 			;working code with help from Devin.
@@ -34,7 +33,7 @@ loop		sub		r1, r0, #1
 		bne		loop
 		mov		pc, lr	
 			
-			;non-working attempt (Stops loop to early because of Z flag. Also, if working, the loop would run as many times as there are zeros and ones in the number)
+			;first attempt (The loop will run as many times as there are digits (zeros and ones) in the number)
 			adr		r0, example
 			ldr		r2, [r0]
 			bl		count_loop
@@ -43,9 +42,10 @@ loop		sub		r1, r0, #1
 			end
 			
 count_loop
-			LSR		r6, r2, r3
-			TST		r6, #1    ;is R6 odd?
-			ADDNE	r1, r1, #1
+			lsr		r6, r2, r3
+			tst		r6, #1    ;is R6 odd?
+			addne	r1, r1, #1
 			add		r3, r3, #1
+			cmp		r6, #0
 			bne		count_loop
 			mov		pc, lr
