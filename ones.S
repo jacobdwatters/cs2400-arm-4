@@ -16,19 +16,24 @@
 			;		2. (30 extra points) For extending the program to counting the ones
 			;		in any word-aligned continuous region of memory.
 			
+			;		Your code here
+			
 example		DCD		0x0010070f
 numones		FILL		4
 			
 			adr		r0, example
-			ldr		r0, [r0]
-			bl		count_loop
-			adr		r1, numones
-			str		r0, [r1]
-			end
-			
+			ldr		r2, [r0]
 			MOV		r1, #0                ;(initialize R1 and R6 to zero)
 			MOV		r6, #0
-count_loop	AND		r6, r6, r2, LSR #1    ;(Right shift by 1, right most bit is in carry flag)
-			ADDCS	r1, r1, #1                ;(Add #1 to R1 if carry  flag is set)
+			bl		count_loop
+			adr		r4, numones
+			str		r1, [r4]
+			end
+			
+count_loop
+			TST		r2, #1    ;is R1 odd?
+			LSL		r2, r2, #1
+			ADD		r1, r1, #1                ;(Add #1 to R1 if carry  flag is set)
 			CMP		r2, #0                  ;(update the status flags if R2 == 0 or not)
 			BEQ		count_loop                     ;(branch back to xx until R2==0)
+			mov		pc, lr
