@@ -20,7 +20,21 @@
 			
 example		DCD		0x0010070f
 numones		FILL		4
+			;working code with help from Devin.
+		adr		r0, example
+		ldr		r0, [r0]
+		bl		loop
+		adr		r1, numones
+		str		r2, [r1]
+		end
+		
+loop		sub		r1, r0, #1
+		ands		r0, r0, r1
+		add		r2, r2, #1
+		bne		loop
+		mov		pc, lr	
 			
+			;non-working attempt (Stops loop to early because of Z flag. Also, if working, the loop would run as many times as there are zeros and ones in the number)
 			adr		r0, example
 			ldr		r2, [r0]
 			bl		count_loop
