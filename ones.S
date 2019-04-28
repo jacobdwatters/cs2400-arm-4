@@ -23,17 +23,15 @@ numones		FILL		4
 			
 			adr		r0, example
 			ldr		r2, [r0]
-			MOV		r1, #0                ;(initialize R1 and R6 to zero)
-			MOV		r6, #0
 			bl		count_loop
 			adr		r4, numones
 			str		r1, [r4]
 			end
 			
 count_loop
-			TST		r2, #1    ;is R1 odd?
-			LSL		r2, r2, #1
-			ADD		r1, r1, #1                ;(Add #1 to R1 if carry  flag is set)
-			CMP		r2, #0                  ;(update the status flags if R2 == 0 or not)
-			BEQ		count_loop                     ;(branch back to xx until R2==0)
+			LSR		r6, r2, r3
+			TST		r6, #1    ;is R6 odd?
+			ADDNE	r1, r1, #1
+			add		r3, r3, #1
+			bne		count_loop
 			mov		pc, lr
